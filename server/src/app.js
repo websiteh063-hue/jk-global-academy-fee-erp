@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
 
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
@@ -11,10 +12,12 @@ const reportRoutes = require("./routes/reportRoutes");
 const { notFoundHandler, errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
+const clientDistPath = path.resolve(__dirname, "../../client/dist");
+const isProduction = process.env.NODE_ENV === "production";
 
 app.use(
   cors({
-    origin: "*"
+    origin: isProduction ? true : "*"
   })
 );
 app.use(express.json());
@@ -30,6 +33,18 @@ app.use("/api/students", studentRoutes);
 app.use("/api/fee-structures", feeStructureRoutes);
 app.use("/api/fees", feeRoutes);
 app.use("/api/reports", reportRoutes);
+
+if (isProduction) {
+  app.use(express.static(clientDistPath));
+
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
+
+    return res.sendFile(path.join(clientDistPath, "index.html"));
+  });
+}
 
 app.use(notFoundHandler);
 app.use(errorHandler);

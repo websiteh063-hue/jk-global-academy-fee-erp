@@ -1,6 +1,6 @@
-# School Fee Management ERP
+# JK Global Academy Fee ERP
 
-A full-stack School Fee Management ERP web application designed for Indian schools. It includes secure admin authentication, advanced student admissions-style records, Aadhaar-based sibling detection, inline-editable tables, discounts, partial payments, PDF receipts, analytics, and Excel export support.
+A full-stack School Fee Management ERP web application for JK Global Academy, designed for Indian schools. It includes secure admin authentication, Aadhaar-based sibling detection, inline-editable tables, monthly fee tracking, discounts, PDF receipts, analytics, and Excel export support.
 
 ## Tech Stack
 
@@ -9,34 +9,36 @@ A full-stack School Fee Management ERP web application designed for Indian schoo
 - Database: MongoDB + Mongoose
 - Authentication: JWT + bcrypt
 - Charts: Recharts
-- Export: xlsx
+- Export: xlsx + pdfkit
 
 ## Features
 
 - JWT-based admin login and protected routes
-- Dashboard with total students, total collection, pending dues, overdue alerts and monthly collection graph
-- Advanced student management with father/mother Aadhaar, contact numbers, address and auto roll number generation
-- Aadhaar-based sibling auto detection with sibling tagging
+- Dashboard with total students, fees collected, fee due, overdue alerts and monthly collection graph
+- Advanced student management with father/mother Aadhaar, contact numbers, address, transport opt-in and auto roll number generation
+- Aadhaar-based sibling auto detection with sibling tagging and sibling-aware discount support
 - Inline editable student and fee structure tables for fast admin data entry
-- Class-wise fee structure management with monthly, quarterly and yearly cycles
-- Student-wise fee collection with discount support, partial payments and real-time pending calculation
-- PDF fee receipt generation and printable receipt view after payment
+- Class-wise fee structure management with tuition, transport and exam fees
+- Monthly student fee ledger with discount support, partial payments, transport-only logic and real-time pending calculation
+- PDF fee receipt generation, printable slip view, transaction ID support for online payments and auto status detection
 - Reports for class-wise collection, date-wise collection and pending fees
 - Excel export for students, fee records and reports
 - Validation, loading states and backend error handling
 - Dummy seed data for quick local testing
+- Single-service production deployment support via Render
 
 ## Project Structure
 
 ```text
 .
-├── client
-│   ├── src
-│   └── .env.example
-├── server
-│   ├── src
-│   └── .env.example
-└── README.md
+|-- client
+|   |-- src
+|   `-- .env.example
+|-- server
+|   |-- src
+|   `-- .env.example
+|-- render.yaml
+`-- README.md
 ```
 
 ## Setup Instructions
@@ -65,6 +67,12 @@ ADMIN_PASSWORD=admin123
 ```
 
 Create `client/.env` from `client/.env.example`:
+
+```env
+VITE_API_BASE_URL=/api
+```
+
+For local split frontend/backend development, you can also use:
 
 ```env
 VITE_API_BASE_URL=http://localhost:5000/api
@@ -100,6 +108,22 @@ npm run dev
 ```
 
 Open the frontend at `http://localhost:5173`.
+
+## Public Deployment
+
+This repository is prepared for a single-service Render deployment so the frontend and backend run on one public URL.
+
+### Render setup
+
+1. Create a MongoDB Atlas database and copy the connection string.
+2. In Render, create a new Blueprint or Web Service from this repository.
+3. Render will detect `render.yaml`.
+4. Set the missing secrets in Render:
+   - `MONGODB_URI`
+   - `JWT_SECRET`
+5. Deploy the service.
+
+The production Express server serves the built React app and the API together, so no separate frontend host is required.
 
 ## Main Modules
 
@@ -141,6 +165,7 @@ Open the frontend at `http://localhost:5173`.
 - Use MongoDB locally or point `MONGODB_URI` to MongoDB Atlas.
 - The UI uses Indian Rupee formatting (`₹`) throughout the app.
 - Deleting a fee structure is blocked if students are assigned to that class, to prevent broken fee records.
+- For `UPI` and `Bank Transfer` payments, transaction ID is mandatory before save.
 
 ## Testing Checklist
 
