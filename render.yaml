@@ -3,6 +3,7 @@ services:
     name: jk-global-academy-erp
     runtime: node
     plan: free
+    autoDeploy: false
     rootDir: .
     buildCommand: |
       cd client

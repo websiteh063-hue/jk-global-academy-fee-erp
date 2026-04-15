@@ -2,6 +2,8 @@
 
 A full-stack School Fee Management ERP web application for JK Global Academy, designed for Indian schools. It includes secure admin authentication, Aadhaar-based sibling detection, inline-editable tables, monthly fee tracking, discounts, PDF receipts, analytics, and Excel export support.
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/websiteh063-hue/jk-global-academy-fee-erp)
+
 ## Tech Stack
 
 - Frontend: React.js + Tailwind CSS + Vite
