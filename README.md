@@ -113,7 +113,28 @@ Open the frontend at `http://localhost:5173`.
 
 ## Public Deployment
 
-This repository is prepared for a single-service Render deployment so the frontend and backend run on one public URL.
+This repository supports both Vercel and Render deployments.
+
+### Vercel setup
+
+The repo root is the correct Vercel project root after the Vercel-specific restructure in this repository.
+
+1. Import the GitHub repository into Vercel.
+2. Keep the project root as `./`.
+3. Vercel will build the React app from `client` and expose the backend through serverless functions under `/api`.
+4. Set these environment variables in Vercel:
+   - `MONGODB_URI`
+   - `JWT_SECRET`
+   - `JWT_EXPIRES_IN=1d`
+   - `ADMIN_USERNAME=admin`
+   - `ADMIN_PASSWORD=admin123`
+5. Deploy the project.
+
+Notes:
+
+- Frontend routes are served from the built Vite app.
+- API routes continue to use the same `/api/...` paths.
+- MongoDB should be hosted remotely, such as MongoDB Atlas, because Vercel functions are stateless.
 
 ### Render setup
 

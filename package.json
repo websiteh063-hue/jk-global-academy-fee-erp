@@ -1,0 +1,11 @@
+{
+  "name": "jk-global-academy-fee-erp",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace client"
+  }
+}
